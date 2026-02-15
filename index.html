@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstaClone - Social Media</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #fafafa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 975px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-family: 'Brush Script MT', cursive;
+            font-weight: bold;
+            color: #262626;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-icons span {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .nav-icons span:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 975px;
+            margin: 80px auto 20px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        /* Feed Section */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Stories */
+        .stories {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        .story {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .story-avatar {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            border: 3px solid #e1306c;
+            padding: 2px;
+            background: white;
+        }
+
+        .story-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .story-name {
+            font-size: 12px;
+            color: #262626;
+        }
+
+        /* Post Card */
+        .post-card {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            gap: 12px;
+        }
+
+        .post-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .post-username {
+            font-weight: 600;
+            font-size: 14px;
+            color: #262626;
+            flex: 1;
+        }
+
+        .post-options {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 600px;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            padding: 8px 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .post-actions span {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .post-actions span:hover {
+            transform: scale(1.1);
+        }
+
+        .post-likes {
+            padding: 0 16px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .post-caption {
+            padding: 0 16px;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .post-caption .username {
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .post-time {
+            padding: 0 16px 12px;
+            font-size: 10px;
+            color: #8e8e8e;
+            text-transform: uppercase;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            width: 320px;
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-username {
+            font-weight: 600;
+            font-size: 14px;
+            color: #262626;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            color: #8e8e8e;
+        }
+
+        .suggestions {
+            margin-top: 20px;
+        }
+
+        .suggestions-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .suggestions-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #8e8e8e;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .suggestion-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .suggestion-info {
+            flex: 1;
+        }
+
+        .suggestion-username {
+            font-weight: 600;
+            font-size: 14px;
+            color: #262626;
+        }
+
+        .suggestion-subtitle {
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+
+        .follow-btn {
+            color: #0095f6;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .follow-btn:hover {
+            color: #00376b;
+        }
+
+        /* Upload Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 500px;
+            max-width: 90%;
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid #dbdbdb;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .upload-area {
+            border: 2px dashed #dbdbdb;
+            border-radius: 8px;
+            padding: 40px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .upload-area:hover {
+            background: #fafafa;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .upload-btn {
+            background: #0095f6;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .upload-btn:hover {
+            background: #00376b;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 32px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+
+            .stories {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .story-avatar {
+                width: 56px;
+                height: 56px;
+            }
+        }
+
+        /* Like animation */
+        @keyframes likeAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); color: #ed4956; }
+            100% { transform: scale(1); }
+        }
+
+        .liked {
+            animation: likeAnimation 0.3s ease;
+            color: #ed4956 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">InstaClone</div>
+            <div class="nav-icons">
+                <span onclick="openUploadModal()">📤</span>
+                <span>🏠</span>
+                <span>💬</span>
+                <span>❤️</span>
+                <span>👤</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Feed -->
+        <div class="feed">
+            <!-- Stories -->
+            <div class="stories">
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect fill='%23e1306c' width='60' height='60'/%3E%3Ctext x='50%25' y='50%25' font-size='24' text-anchor='middle' dy='.3em' fill='white'%3ERaj%3C/text%3E%3C/svg%3E" alt="Story">
+                    </div>
+                    <div class="story-name">raj_sharma</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect fill='%234facfe' width='60' height='60'/%3E%3Ctext x='50%25' y='50%25' font-size='24' text-anchor='middle' dy='.3em' fill='white'%3EPriya%3C/text%3E%3C/svg%3E" alt="Story">
+                    </div>
+                    <div class="story-name">priya_k</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect fill='%2343e97b' width='60' height='60'/%3E%3Ctext x='50%25' y='50%25' font-size='24' text-anchor='middle' dy='.3em' fill='white'%3EAman%3C/text%3E%3C/svg%3E" alt="Story">
+                    </div>
+                    <div class="story-name">aman_2024</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect fill='%23fa709a' width='60' height='60'/%3E%3Ctext x='50%25' y='50%25' font-size='24' text-anchor='middle' dy='.3em' fill='white'%3ENeha%3C/text%3E%3C/svg%3E" alt="Story">
+                    </div>
+                    <div class="story-name">neha_gupta</div>
+                </div>
+            </div>
+
+            <!-- Post 1 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <img class="post-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle fill='%23e1306c' cx='16' cy='16' r='16'/%3E%3Ctext x='50%25' y='50%25' font-size='14' text-anchor='middle' dy='.3em' fill='white'%3ER%3C/text%3E%3C/svg%3E" alt="Avatar">
+                    <span class="post-username">raj_sharma</span>
+                    <span class="post-options">⋯</span>
+                </div>
+                <img class="post-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='grad1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ee9ca7;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23ffdde1;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad1)' width='600' height='600'/%3E%3Ctext x='50%25' y='40%25' font-size='48' text-anchor='middle' fill='white'%3E🏔️%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='24' text-anchor='middle' fill='white'%3EMountain View%3C/text%3E%3C/svg%3E" alt="Post">
+                <div class="post-actions">
+                    <span class="like-btn" onclick="toggleLike(this)">❤️</span>
+                    <span>💬</span>
+                    <span>📤</span>
+                    <span style="margin-left: auto">🔖</span>
+                </div>
+                <div class="post-likes">1,234 likes</div>
+                <div class="post-caption">
+                    <span class="username">raj_sharma</span>
+                    Amazing sunset at the mountains! 🌄 #travel #nature
+                </div>
+                <div class="post-time">2 hours ago</div>
+            </div>
+
+            <!-- Post 2 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <img class="post-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle fill='%234facfe' cx='16' cy='16' r='16'/%3E%3Ctext x='50%25' y='50%25' font-size='14' text-anchor='middle' dy='.3em' fill='white'%3EP%3C/text%3E%3C/svg%3E" alt="Avatar">
+                    <span class="post-username">priya_k</span>
+                    <span class="post-options">⋯</span>
+                </div>
+                <img class="post-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='grad2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300f2fe;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%234facfe;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad2)' width='600' height='600'/%3E%3Ctext x='50%25' y='40%25' font-size='48' text-anchor='middle' fill='white'%3E☕%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='24' text-anchor='middle' fill='white'%3ECoffee Time%3C/text%3E%3C/svg%3E" alt="Post">
+                <div class="post-actions">
+                    <span class="like-btn" onclick="toggleLike(this)">❤️</span>
+                    <span>💬</span>
+                    <span>📤</span>
+                    <span style="margin-left: auto">🔖</span>
+                </div>
+                <div class="post-likes">892 likes</div>
+                <div class="post-caption">
+                    <span class="username">priya_k</span>
+                    Perfect morning vibes ☕✨
+                </div>
+                <div class="post-time">5 hours ago</div>
+            </div>
+
+            <!-- Post 3 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <img class="post-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle fill='%2343e97b' cx='16' cy='16' r='16'/%3E%3Ctext x='50%25' y='50%25' font-size='14' text-anchor='middle' dy='.3em' fill='white'%3EA%3C/text%3E%3C/svg%3E" alt="Avatar">
+                    <span class="post-username">aman_2024</span>
+                    <span class="post-options">⋯</span>
+                </div>
+                <img class="post-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cdefs%3E%3ClinearGradient id='grad3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2338f9d7;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2343e97b;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad3)' width='600' height='600'/%3E%3Ctext x='50%25' y='40%25' font-size='48' text-anchor='middle' fill='white'%3E🏋️%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='24' text-anchor='middle' fill='white'%3EFitness Goals%3C/text%3E%3C/svg%3E" alt="Post">
+                <div class="post-actions">
+                    <span class="like-btn" onclick="toggleLike(this)">❤️</span>
+                    <span>💬</span>
+                    <span>📤</span>
+                    <span style="margin-left: auto">🔖</span>
+                </div>
+                <div class="post-likes">2,156 likes</div>
+                <div class="post-caption">
+                    <span class="username">aman_2024</span>
+                    Day 30 of my fitness journey! 💪 Keep pushing!
+                </div>
+                <div class="post-time">1 day ago</div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-card">
+                <img class="profile-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Ccircle fill='%23667eea' cx='28' cy='28' r='28'/%3E%3Ctext x='50%25' y='50%25' font-size='24' text-anchor='middle' dy='.3em' fill='white'%3EYou%3C/text%3E%3C/svg%3E" alt="Profile">
+                <div class="profile-info">
+                    <div class="profile-username">your_username</div>
+                    <div class="profile-name">Your Name</div>
+                </div>
+            </div>
+
+            <div class="suggestions">
+                <div class="suggestions-header">
+                    <span class="suggestions-title">Suggestions For You</span>
+                </div>
+                
+                <div class="suggestion-item">
+                    <img class="suggestion-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle fill='%23fa709a' cx='16' cy='16' r='16'/%3E%3Ctext x='50%25' y='50%25' font-size='14' text-anchor='middle' dy='.3em' fill='white'%3EN%3C/text%3E%3C/svg%3E" alt="Suggestion">
+                    <div class="suggestion-info">
+                        <div class="suggestion-username">neha_gupta</div>
+                        <div class="suggestion-subtitle">Followed by raj_sharma</div>
+                    </div>
+                    <button class="follow-btn" onclick="followUser(this)">Follow</button>
+                </div>
+
+                <div class="suggestion-item">
+                    <img class="suggestion-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle fill='%23feca57' cx='16' cy='16' r='16'/%3E%3Ctext x='50%25' y='50%25' font-size='14' text-anchor='middle' dy='.3em' fill='white'%3EV%3C/text%3E%3C/svg%3E" alt="Suggestion">
+                    <div class="suggestion-info">
+                        <div class="suggestion-username">vikas_travels</div>
+                        <div class="suggestion-subtitle">Followed by priya_k</div>
+                    </div>
+                    <button class="follow-btn" onclick="followUser(this)">Follow</button>
+                </div>
+
+                <div class="suggestion-item">
+                    <img class="suggestion-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle fill='%23ff6348' cx='16' cy='16' r='16'/%3E%3Ctext x='50%25' y='50%25' font-size='14' text-anchor='middle' dy='.3em' fill='white'%3ES%3C/text%3E%3C/svg%3E" alt="Suggestion">
+                    <div class="suggestion-info">
+                        <div class="suggestion-username">sneha_foodie</div>
+                        <div class="suggestion-subtitle">Followed by aman_2024</div>
+                    </div>
+                    <button class="follow-btn" onclick="followUser(this)">Follow</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <span class="close-modal" onclick="closeUploadModal()">×</span>
+        <div class="modal-content">
+            <div class="modal-header">
+                Create new post
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📸</div>
+                    <div class="upload-text">Drag photos and videos here</div>
+                    <div style="color: #8e8e8e; font-size: 14px; margin-top: 8px;">or click to select from computer</div>
+                </div>
+                <input type="file" id="fileInput" accept="image/*,video/*" onchange="previewFile(this)">
+                <img id="preview" class="preview-image" style="display: none;">
+                <button class="upload-btn" id="shareBtn" style="display: none;" onclick="sharePost()">Share</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Like functionality
+        function toggleLike(element) {
+            element.classList.toggle('liked');
+            const likesDiv = element.closest('.post-card').querySelector('.post-likes');
+            const currentLikes = parseInt(likesDiv.textContent);
+            
+            if (element.classList.contains('liked')) {
+                likesDiv.textContent = (currentLikes + 1).toLocaleString() + ' likes';
+            } else {
+                likesDiv.textContent = (currentLikes - 1).toLocaleString() + ' likes';
+            }
+        }
+
+        // Follow functionality
+        function followUser(button) {
+            if (button.textContent === 'Follow') {
+                button.textContent = 'Following';
+                button.style.color = '#262626';
+            } else {
+                button.textContent = 'Follow';
+                button.style.color = '#0095f6';
+            }
+        }
+
+        // Upload modal
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+            document.getElementById('preview').style.display = 'none';
+            document.getElementById('shareBtn').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+        }
+
+        function previewFile(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    document.getElementById('shareBtn').style.display = 'inline-block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function sharePost() {
+            alert('Post shared successfully! 🎉\n\n(Actual backend functionality mein ye post database mein save hoga aur feed mein dikhai dega)');
+            closeUploadModal();
+        }
+
+        // Story click animation
+        document.querySelectorAll('.story').forEach(story => {
+            story.addEventListener('click', function() {
+                alert('Story feature! 📸\n\n(Backend mein ye 24-hour stories show karega)');
+            });
+        });
+    </script>
+</body>
+</html>
